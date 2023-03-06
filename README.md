@@ -33,3 +33,4 @@ npm install
 ```
 node server.js
 ```
+Use http://localhost:8080/api-docs/ to access the swagger docs
