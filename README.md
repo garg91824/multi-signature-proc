@@ -1,19 +1,35 @@
-# REST API built with Node.js, Express.js and PostgreSQL
+# Node.js PostgreSQL 
 
-The goal of this project is to build a REST API using Node.js, Express.js and PostgreSQL. For this project I created a table called Users which has three columns id, name and email.
-NPM Packages used in this project
+Data Models
+Users
+Id, name, email, loginId
 
-# You will learn this:
+Processes
+processId, creatorId, participantId, canViewComment, signedOff, comment, picture (s3 link)
 
-<br> How to start a Node.js project
-<br> How to use express.js to create a web server
-<br> How to create routes for your application
-<br> How to use pg module to get connected to PostgreSQL relational database
-<br> How to create CRUD operations in PostgreSQL relational database
-<br> How to create a REST API implementing HTTP methods: GET, POST, PUT AND DELETE
+Can defnitely normalize this table based on additional context and requirement, currently it will result in lots of joins
 
-# Modules used:
+APIs
+Pagination can be added to the APIS, and authentication as well. For now limited the scope
 
-<br> express: web framework for node
-<br> pg: connection driver for PostgreSQL relational database
-<br> nodemon: module used to automatically restart the application when a change is made
+Event driven implementation - 
+Ideally this needs to be an event drive microservice based architecture where any change event like process creation is published to 
+a kafka topic and a microservice will listen to that, this way it will occur async and decrease the latency. 
+
+Microservices 
+Notiication service - based on the type of event it will send the email/ web notiication
+  send Email - 
+    Listens to process_created event and sends an email to all the participants 
+    Listens to the all_sign_off event and sends an email to all the participants
+  web notification service -
+    Microservice that listens to the sign_off event and sends a notification to the the creator [given the connection has to be alive not a good design - connection will be idle most of the time]
+
+## Project setup
+```
+npm install
+```
+
+### Run
+```
+node server.js
+```
